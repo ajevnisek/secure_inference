@@ -9,3 +9,9 @@ data
 relu_spec_files/
 .idea/
 *.py[cod]
+/cached_relus/
+/choosing_matrices/
+{WORK_DIR}/
+osi_checkpoints/
+results/
+trained_networks/

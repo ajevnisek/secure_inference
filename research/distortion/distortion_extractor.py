@@ -181,7 +181,9 @@ class DistortionUtils:
 
 
 class ChannelDistortionHandler:
-    def __init__(self, gpu_id, output_path, checkpoint, config, is_train_mode=False, baseline_block_size_spec_path=None, clean_block_size_spec_path=None):
+    def __init__(self, gpu_id, output_path, checkpoint, config,
+                 is_train_mode=False, baseline_block_size_spec_path=None,
+                 clean_block_size_spec_path=None):
 
         self.gpu_id = gpu_id
         self.output_path = output_path

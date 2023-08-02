@@ -20,7 +20,7 @@ from mmcls.utils import (auto_select_device, get_root_logger,
 
 from research.distortion.arch_utils.factory import arch_utils_factory
 import pickle
-from research.mmlab_extension.classification.resnet_cifar_v2 import ResNet_CIFAR_V2  # TODO: why is this needed?
+# from research.mmlab_extension.classification.resnet_cifar_v2 import ResNet_CIFAR_V2  # TODO: why is this needed?
 from research.mmlab_extension.classification.resnet import MyResNet  # TODO: why is this needed?
 def parse_args():
     parser = argparse.ArgumentParser(description='mmcls test model')
@@ -143,7 +143,7 @@ def main():
         init_dist(args.launcher, **cfg.dist_params)
     if 'distortion_extraction' in cfg.data:
         del cfg.data['distortion_extraction']
-    dataset = build_dataset(cfg.data.test, default_args=dict(test_mode=True))
+    dataset = build_dataset(cfg.data.test, default_args=dict(test_mode='test'))
 
     # build the dataloader
     # The default loader config

@@ -1,0 +1,3 @@
+[submodule "mmpretrain"]
+	path = mmpretrain
+	url = git@github.com:ajevnisek/mmpretrain.git

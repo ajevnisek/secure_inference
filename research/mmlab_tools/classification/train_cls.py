@@ -19,7 +19,7 @@ from mmcls.models import build_classifier
 from mmcls.utils import (auto_select_device, collect_env, get_root_logger,
                          setup_multi_processes)
 
-from research.mmlab_extension.classification.resnet_cifar_v2 import ResNet_CIFAR_V2  # TODO: why is this needed?
+# from research.mmlab_extension.classification.resnet_cifar_v2 import ResNet_CIFAR_V2  # TODO: why is this needed?
 from research.mmlab_extension.classification.resnet import MyResNet  # TODO: why is this needed?
 
 from research.distortion.arch_utils.factory import arch_utils_factory
@@ -200,6 +200,13 @@ def main():
         val_dataset = copy.deepcopy(cfg.data.val)
         val_dataset.pipeline = cfg.data.train.pipeline
         datasets.append(build_dataset(val_dataset))
+    if len(cfg.workflow) == 3:
+        val_dataset = copy.deepcopy(cfg.data.val)
+        val_dataset.pipeline = cfg.data.train.pipeline
+        datasets.append(build_dataset(val_dataset))
+        test_dataset = copy.deepcopy(cfg.data.test)
+        test_dataset.pipeline = cfg.data.train.pipeline
+        datasets.append(build_dataset(test_dataset))
 
     # save mmcls version, config file content and class names in
     # runner as meta data
@@ -216,7 +223,8 @@ def main():
         model,
         datasets,
         cfg,
-        distributed=distributed,
+        # distributed=distributed,
+        distributed=False,
         validate=(not args.no_validate),
         timestamp=timestamp,
         device=cfg.device,

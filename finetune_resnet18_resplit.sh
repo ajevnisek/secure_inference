@@ -1,0 +1,3 @@
+research/configs/classification/resnet/resnet18_cifar100_resplit_with_val/induced_relu_fintune_network_for_greedly_swaped_4_relu.py
+./research/mmlab_tools/classification/dist_train_cls.sh  \
+1   --work-dir trained_networks/classification/resnet18_cifar100_resplit/induced_relu_backbone_greedly_swap_4_relus_finetune/
