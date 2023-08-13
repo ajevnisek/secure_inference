@@ -91,6 +91,12 @@ def parse_args():
         type=str,
         default="osi_checkpoints/cifar100/resnet18",
     )
+    
+    parser.add_argument(
+        "--num_prototypes",
+        help="number of prototypes",
+        type=int
+    )
 
     parser.add_argument(
         "--removed_sequence",
@@ -179,10 +185,10 @@ def parse_args():
     return args
 
 
-def load_resnet18_choosing_matrices():
+def load_resnet18_choosing_matrices(num_prototypes):
     with open(
         osp.join(
-            "cached_relus/cifar100_with_val/resnet18/"
+            f"cached_relus/cifar100_with_val/resnet18/{num_prototypes}_most_important_relus/"
             "layer_name_to_choosing_matrix/"
             "layer_name_to_matrix.pkl"
         ),
@@ -192,8 +198,8 @@ def load_resnet18_choosing_matrices():
     return layer_name_to_matrix
 
 
-def load_permutation_matrices_for_resnet18():
-    layer_name_to_matrix = load_resnet18_choosing_matrices()
+def load_permutation_matrices_for_resnet18(num_prototypes):
+    layer_name_to_matrix = load_resnet18_choosing_matrices(num_prototypes)
     permutation_matrices = []
     for layer_index in [1, 2, 3, 4]:
         for sub_index in [0, 1]:
@@ -203,9 +209,9 @@ def load_permutation_matrices_for_resnet18():
     return permutation_matrices
 
 
-def get_model_cfg_based_on_bit_vector(bit_vector, permutation_matrices=None):
+def get_model_cfg_based_on_bit_vector(bit_vector, num_prototypes, permutation_matrices=None):
     if permutation_matrices is None:
-        permutation_matrices = load_permutation_matrices_for_resnet18()
+        permutation_matrices = load_permutation_matrices_for_resnet18(num_prototypes)
     # model settings
     model = dict(
         type="ImageClassifier",
@@ -341,8 +347,8 @@ if __name__ == "__main__":
     bit_vector = create_use_induced_relu_bit_vector(
         removed_sequence, args.how_many_replacements
     )
-    permutation_matrices = load_permutation_matrices_for_resnet18()
-    model_cfg = get_model_cfg_based_on_bit_vector(bit_vector, permutation_matrices)
+    permutation_matrices = load_permutation_matrices_for_resnet18(args.num_prototypes)
+    model_cfg = get_model_cfg_based_on_bit_vector(bit_vector, args.num_prototypes, permutation_matrices)
     target_path = os.path.join(
         args.cache_root_dir,
         f"replaced_{args.how_many_replacements}_relus_greedy",

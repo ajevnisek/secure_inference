@@ -265,3 +265,38 @@ plt.savefig(
     )
 )
 plt.show()
+
+plt.clf()
+plt.plot(range(1, 16 + 1), [original_acc] * 16, "--k", linewidth=3)
+plt.plot(range(1, 16 + 1), before_finetuning_acc1, "-x", linewidth=3)
+plt.plot(range(1, 16 + 1), after_finetuning_acc1, "-x", linewidth=3)
+# draw_arrow(plt, (9, before_finetuning_acc1[8]), (9, after_finetuning_acc1[8]))
+for i in range(4, 16, 2):
+    plt.gca().annotate(
+        "",
+        xy=(i + 1, after_finetuning_acc1[i]),
+        xytext=(i + 1, before_finetuning_acc1[i]),
+        arrowprops=dict(arrowstyle="->"),
+    )
+    plt.gca().text(
+        i + 1,
+        (before_finetuning_acc1[i] + after_finetuning_acc1[i]) / 2.0,
+        f"x" f"{after_finetuning_acc1[i] / before_finetuning_acc1[i]:.0f}",
+    )
+num_all_relus = sum(layer_name_to_num_of_relus.values())
+plt.xticks(range(1, 1 + 16), [f"{x * num_all_relus / 100.0 / 1000.0:.0f}K" for x in relu_usage], rotation=0)
+plt.xlabel("Number of ReLUs [K]")
+plt.ylabel("accuracy [%]")
+plt.title("CIFAR100 ResNet18: Accuracy vs ReLU usage")
+plt.grid(True)
+plt.legend(["baseline", "greedy", "finetune"])
+fig = plt.gcf()
+fig.set_size_inches((10, 5))
+plt.tight_layout()
+plt.savefig(
+    osp.join(
+        OUTPUT_DIR,
+        "greedy_search_of_induced_relus_with_finetune_mul_x_axis_num_relus.png",
+    )
+)
+plt.show()

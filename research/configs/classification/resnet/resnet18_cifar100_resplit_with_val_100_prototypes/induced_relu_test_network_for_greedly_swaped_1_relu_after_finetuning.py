@@ -14,20 +14,20 @@ _base_ = [
 removed_sequence = [ 
     'layer4[1].relu_2', 
     'layer1[0].relu_1', 
-    'layer4[1].relu_1', 
+    'layer2[1].relu_1', 
+    'layer3[1].relu_1', 
+    'layer1[1].relu_2', 
     'layer2[0].relu_2', 
     'layer1[1].relu_1', 
-    'layer1[1].relu_2', 
     'layer1[0].relu_2', 
-    'layer4[0].relu_2', 
-    'layer2[1].relu_2', 
-    'layer2[1].relu_1', 
-    'layer3[0].relu_1', 
-    'layer3[0].relu_2', 
+    'layer4[1].relu_1', 
     'layer2[0].relu_1', 
-    'layer3[1].relu_1', 
-    'layer3[1].relu_2', 
+    'layer2[1].relu_2', 
     'layer4[0].relu_1', 
+    'layer3[0].relu_2', 
+    'layer3[0].relu_1', 
+    'layer3[1].relu_2', 
+    'layer4[0].relu_2', 
 ] 
 
 def layer_name_to_row_col(layer_name):
@@ -113,9 +113,9 @@ dist_params = dict(backend="gloo")
 log_level = "INFO"
 load_from = None
 # TODO: write a script to create a checkpoint!"
-resume_from = osp.join("trained_networks/classification/resnet18_cifar100_resplit_with_val_100_prototypes/", 
+resume_from = osp.join("trained_networks/classification/resnet18_cifar100_resplit_with_val_100_prototypes", 
      f"/induced_relu_backbone_greedly_swap_{NUM_OF_REPLACEMENTS}_relus_finetune/latest.pth") 
-checkpoint = osp.join("trained_networks/classification/resnet18_cifar100_resplit_with_val_100_prototypes/", 
+checkpoint = osp.join("trained_networks/classification/resnet18_cifar100_resplit_with_val_100_prototypes", 
      f"/induced_relu_backbone_greedly_swap_{NUM_OF_REPLACEMENTS}_relus_finetune/latest.pth") 
 evaluation = dict(interval=10, by_epoch=True)
 workflow = [("train", 10), ("val", 1), ("val", 1)]
