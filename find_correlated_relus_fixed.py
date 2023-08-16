@@ -16,6 +16,9 @@ def farthest_point_sampling(points, num_samples, metric: float = 2):
     samples = torch.zeros(num_samples)
     farthest_idx = torch.randint(0, num_points, (1, )).item()
 
+    if num_samples == num_points:
+        return torch.range(0, num_samples - 1)
+
     for i in tqdm(range(num_samples)):
         samples[i] = farthest_idx
         current_point = points[farthest_idx]
