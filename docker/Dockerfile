@@ -14,5 +14,6 @@ RUN pip install --no-cache-dir --upgrade pip && \
 RUN apt-get update; apt-get install ffmpeg libsm6 libxext6 nano screen -y
 
 WORKDIR /usr/local/bin
-COPY docker_entry_point.py .
+COPY docker/docker_entry_point.py .
 CMD ["python", "docker_entry_point.py"]
+WORKDIR /home/code/mmpretrain
