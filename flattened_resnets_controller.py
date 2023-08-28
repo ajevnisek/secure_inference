@@ -1,4 +1,5 @@
 """This module controls ResNets integration with induced ReLU."""
+import os, pickle
 import torch
 
 FLATTENED_RESNET18_DECLARATION_PATH = 'flattened_resnet18.py'
@@ -10,15 +11,14 @@ INDUCER_TO_INDUCED = {'relu0':['ResLayer0_BasicBlockV20_relu_1',
                                'ResLayer1_BasicBlockV22_relu_2',
                                'ResLayer1_BasicBlockV23_relu_1',
                                'ResLayer1_BasicBlockV23_relu_2',
-                               'ResLayer2_BasicBlockV24_relu_1',
-                               'ResLayer2_BasicBlockV24_relu_2',
                                ],
-                    'ResLayer2_BasicBlockV25_relu_1':[
-                               'ResLayer2_BasicBlockV25_relu_2',
-                               'ResLayer3_BasicBlockV26_relu_1',
-                               'ResLayer3_BasicBlockV26_relu_2',
-                               'ResLayer3_BasicBlockV27_relu_1',
-                               'ResLayer3_BasicBlockV27_relu_2',
+                    'ResLayer2_BasicBlockV24_relu_1':['ResLayer2_BasicBlockV24_relu_2',
+                                                      'ResLayer2_BasicBlockV25_relu_1',
+                                                      'ResLayer2_BasicBlockV25_relu_2',
+                                                      'ResLayer3_BasicBlockV26_relu_1',
+                                                      'ResLayer3_BasicBlockV26_relu_2',
+                                                      'ResLayer3_BasicBlockV27_relu_1',
+                                                      'ResLayer3_BasicBlockV27_relu_2',
                                ]}
 
 
@@ -146,6 +146,38 @@ class ResNetController:
         new_decl = self.create_new_class_declaration()
         with open(self.new_path, 'w') as f:
             f.write(new_decl)
+    def add_declaration_to_mmcls_backbones(self, path_to_mmcls_backbones_dir='mmpretrain/mmcls/models/backbones'):
+        new_decl = self.create_new_class_declaration()
+        idx = find_line_index_which_starts_with(new_decl, 'class')
+        classname = new_decl.splitlines()[idx].split('class ')[1].split('(')[0]
+        new_decl = '\n'.join(
+            new_decl.splitlines()[:idx] +
+            ['from ..builder import BACKBONES', '', '',
+             '@BACKBONES.register_module()'] +
+            new_decl.splitlines()[idx:])
+        python_filename = os.path.basename(self.new_path)
+
+        new_path = os.path.join(path_to_mmcls_backbones_dir, os.path.basename(self.new_path))
+        with open(new_path, 'w') as f:
+            f.write(new_decl)
+
+        init_path = os.path.join(path_to_mmcls_backbones_dir, '__init__.py')
+        with open(init_path, 'r') as f:
+            init_data = f.read()
+        idx = find_line_index_which_starts_with(init_data, '__all__')
+        init_data = '\n'.join(
+            init_data.splitlines()[:idx] +
+            [f'from .{python_filename[:-3]} import {classname}', '', '',
+             ] +
+            init_data.splitlines()[idx:])
+        idx = find_line_index_which_starts_with(init_data, ']')
+        init_data = '\n'.join(
+            init_data.splitlines()[:idx] +
+            [' ' * 4 + f'"{classname}", ', '',] +
+            init_data.splitlines()[idx:])
+        with open(init_path, 'w') as f:
+            f.write(init_data)
+
 
 def create_dummy_choosing_matrices(controller):
     #from flattened_resnet18_halfway_induced import HalfWayResNet18
@@ -164,8 +196,35 @@ def main():
     controller = ResNetController(new_name='HalfWayResNet18', new_path='flattened_resnet18_halfway_induced.py',
                                   old_model=flattened_model, )
     controller.create_declaration()
-    create_dummy_choosing_matrices(controller)
+    path = '/home/uriel/research/secure_inference/cached_relus/cifar100_with_val/resnet18/16384_most_important_relus/layer_name_to_choosing_matrix/layer_name_to_matrix.pkl'
+    old_layer_name_to_choosing_matrix = pickle.load(open(path, 'rb'))
 
+    old_layer_name_to_new_name = {
+        'layer1[0].relu_1': 'ResLayer0_BasicBlockV20_relu_1',
+        'layer1[0].relu_2': 'ResLayer0_BasicBlockV20_relu_2',
+        'layer1[1].relu_1': 'ResLayer0_BasicBlockV21_relu_1',
+        'layer1[1].relu_2': 'ResLayer0_BasicBlockV21_relu_2',
+        'layer2[0].relu_1': 'ResLayer1_BasicBlockV22_relu_1',
+        'layer2[0].relu_2': 'ResLayer1_BasicBlockV22_relu_2',
+        'layer2[1].relu_1': 'ResLayer1_BasicBlockV23_relu_1',
+        'layer2[1].relu_2': 'ResLayer1_BasicBlockV23_relu_2',
+        'layer3[0].relu_1': 'ResLayer2_BasicBlockV24_relu_1',
+        'layer3[0].relu_2': 'ResLayer2_BasicBlockV24_relu_2',
+        'layer3[1].relu_1': 'ResLayer2_BasicBlockV25_relu_1',
+        'layer3[1].relu_2': 'ResLayer2_BasicBlockV25_relu_2',
+        'layer4[0].relu_1': 'ResLayer3_BasicBlockV26_relu_1',
+        'layer4[0].relu_2': 'ResLayer3_BasicBlockV26_relu_2',
+        'layer4[1].relu_1': 'ResLayer3_BasicBlockV27_relu_1',
+        'layer4[1].relu_2': 'ResLayer3_BasicBlockV27_relu_2'
+    }
+    choosing_matrices = {}
+    for k in old_layer_name_to_choosing_matrix:
+        new_layer_name = old_layer_name_to_new_name[k]
+        if new_layer_name in INDUCER_TO_INDUCED['relu0']:
+            choosing_matrices[f'relu0->{new_layer_name}'] = old_layer_name_to_choosing_matrix[k]
+        else:
+            choosing_matrices[f'ResLayer2_BasicBlockV24_relu_1->{new_layer_name}'] = old_layer_name_to_choosing_matrix[k]
+    torch.save(choosing_matrices, '16384_choosing_matrices_experiment.pth')
 
 if __name__ == '__main__':
     main()

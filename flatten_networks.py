@@ -186,7 +186,41 @@ def main():
     new_checkpoint = pretrained_resnet18_checkpoint
     new_checkpoint['state_dict'] = new_state_dict
     torch.save(new_checkpoint, 'flattened_resnet18_checkpoint.pth')
+    import ipdb; ipdb.set_trace()
+    pretrained_resnet18_checkpoint = torch.load(
+        '/home/uriel/research/secure_inference/trained_networks/16384_finetune_attempt/latest.pth')
+    old_state_dict = pretrained_resnet18_checkpoint['state_dict']
+    new_state_dict = {}
+    for k in old_state_dict.keys():
+        if k.startswith('backbone'):
+            element_name = '.'.join(k[len('backbone.'):].split('.')[:-1])
+            data_name = k[len('backbone.'):].split('.')[-1]
+            new_state_dict['backbone.' + old_names_to_new_names[element_name] + f'.{data_name}'] = \
+                pretrained_resnet18_checkpoint['state_dict'][k]
+        else:
+            new_state_dict[k] = pretrained_resnet18_checkpoint['state_dict'][k]
+    new_checkpoint = pretrained_resnet18_checkpoint
+    new_checkpoint['state_dict'] = new_state_dict
+    torch.save(new_checkpoint, 'flattened_resnet18_checkpoint_10_induced_relus.pth')
 
+
+def convert_old_format_checkpoint_to_new_format_checkpoint(path_to_old_checkpoint, path_to_new_checkpoint):
+    old_names_to_new_names = {'conv1': 'conv0', 'bn1': 'bn0', 'layer1.0.conv1': 'ResLayer0_BasicBlockV20_conv1', 'layer1.0.bn1': 'ResLayer0_BasicBlockV20_norm1', 'layer1.0.conv2': 'ResLayer0_BasicBlockV20_conv2', 'layer1.0.bn2': 'ResLayer0_BasicBlockV20_norm2', 'layer1.1.conv1': 'ResLayer0_BasicBlockV21_conv1', 'layer1.1.bn1': 'ResLayer0_BasicBlockV21_norm1', 'layer1.1.conv2': 'ResLayer0_BasicBlockV21_conv2', 'layer1.1.bn2': 'ResLayer0_BasicBlockV21_norm2', 'layer2.0.conv1': 'ResLayer1_BasicBlockV22_conv1', 'layer2.0.bn1': 'ResLayer1_BasicBlockV22_norm1', 'layer2.0.conv2': 'ResLayer1_BasicBlockV22_conv2', 'layer2.0.bn2': 'ResLayer1_BasicBlockV22_norm2', 'layer2.0.downsample.0': 'ResLayer1_BasicBlockV22_downsample.0', 'layer2.0.downsample.1': 'ResLayer1_BasicBlockV22_downsample.1', 'layer2.1.conv1': 'ResLayer1_BasicBlockV23_conv1', 'layer2.1.bn1': 'ResLayer1_BasicBlockV23_norm1', 'layer2.1.conv2': 'ResLayer1_BasicBlockV23_conv2', 'layer2.1.bn2': 'ResLayer1_BasicBlockV23_norm2', 'layer3.0.conv1': 'ResLayer2_BasicBlockV24_conv1', 'layer3.0.bn1': 'ResLayer2_BasicBlockV24_norm1', 'layer3.0.conv2': 'ResLayer2_BasicBlockV24_conv2', 'layer3.0.bn2': 'ResLayer2_BasicBlockV24_norm2', 'layer3.0.downsample.0': 'ResLayer2_BasicBlockV24_downsample.0', 'layer3.0.downsample.1': 'ResLayer2_BasicBlockV24_downsample.1', 'layer3.1.conv1': 'ResLayer2_BasicBlockV25_conv1', 'layer3.1.bn1': 'ResLayer2_BasicBlockV25_norm1', 'layer3.1.conv2': 'ResLayer2_BasicBlockV25_conv2', 'layer3.1.bn2': 'ResLayer2_BasicBlockV25_norm2', 'layer4.0.conv1': 'ResLayer3_BasicBlockV26_conv1', 'layer4.0.bn1': 'ResLayer3_BasicBlockV26_norm1', 'layer4.0.conv2': 'ResLayer3_BasicBlockV26_conv2', 'layer4.0.bn2': 'ResLayer3_BasicBlockV26_norm2', 'layer4.0.downsample.0': 'ResLayer3_BasicBlockV26_downsample.0', 'layer4.0.downsample.1': 'ResLayer3_BasicBlockV26_downsample.1', 'layer4.1.conv1': 'ResLayer3_BasicBlockV27_conv1', 'layer4.1.bn1': 'ResLayer3_BasicBlockV27_norm1', 'layer4.1.conv2': 'ResLayer3_BasicBlockV27_conv2', 'layer4.1.bn2': 'ResLayer3_BasicBlockV27_norm2'}
+    pretrained_resnet18_checkpoint = torch.load(path_to_old_checkpoint)
+    old_state_dict = pretrained_resnet18_checkpoint['state_dict']
+    new_state_dict = {}
+    for k in old_state_dict.keys():
+        if k.startswith('backbone'):
+            element_name = '.'.join(k[len('backbone.'):].split('.')[:-1])
+            data_name = k[len('backbone.'):].split('.')[-1]
+            if element_name in old_names_to_new_names:
+                new_state_dict['backbone.' + old_names_to_new_names[element_name] + f'.{data_name}'] = \
+                    pretrained_resnet18_checkpoint['state_dict'][k]
+        else:
+            new_state_dict[k] = pretrained_resnet18_checkpoint['state_dict'][k]
+    new_checkpoint = pretrained_resnet18_checkpoint
+    new_checkpoint['state_dict'] = new_state_dict
+    torch.save(new_checkpoint, path_to_new_checkpoint)
 
 if __name__ == '__main__':
     main()
