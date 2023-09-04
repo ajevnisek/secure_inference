@@ -1,0 +1,1 @@
+./research/mmlab_tools/classification/dist_create_induced_relu_cached_model_v2.sh ${FLATTENED_MODEL_CONFIG_FILE} 1 ${BASELINE_FLATTENED_CHECKPOINT_PATH} ${NEW_INDUCED_MODEL_NAME} ${CACHE_DIR}/layer_name_to_choosing_matrix/layer_name_to_matrix.pkl ${FINETUNE_WORK_DIR}/base.pth

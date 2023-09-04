@@ -1,0 +1,2 @@
+python3 flatten_networks.py
+python customize_network_class_for_mmcls.py flattened_resnet18.py ${MMCLS_BACKBONE_DIR}

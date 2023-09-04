@@ -9,3 +9,5 @@ data
 relu_spec_files/
 .idea/
 *.py[cod]
+cached_relus/
+trained_networks/

@@ -1,0 +1,1 @@
+python3 mmpretrain/tools/test_with_hooks_flattened_networks.py ${FLATTENED_MODEL_CONFIG_FILE} ${BASELINE_FLATTENED_CHECKPOINT_PATH} --out ${CACHE_DIR}/out_file_flattened.json --metrics accuracy --activations_out ${CACHE_DIR}/activations.pkl

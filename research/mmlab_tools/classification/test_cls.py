@@ -20,8 +20,9 @@ from mmcls.utils import (auto_select_device, get_root_logger,
 
 from research.distortion.arch_utils.factory import arch_utils_factory
 import pickle
-from research.mmlab_extension.classification.resnet_cifar_v2 import ResNet_CIFAR_V2  # TODO: why is this needed?
-from research.mmlab_extension.classification.resnet import MyResNet  # TODO: why is this needed?
+# from research.mmlab_extension.classification.resnet_cifar_v2 import ResNet_CIFAR_V2  # TODO: why is this needed?
+# from research.mmlab_extension.classification.resnet import MyResNet  # TODO: why is this needed?
+
 def parse_args():
     parser = argparse.ArgumentParser(description='mmcls test model')
     parser.add_argument('config', help='test config file path')

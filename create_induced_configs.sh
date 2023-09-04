@@ -1,0 +1,1 @@
+python3 create_induced_configs.py ${BASE_INDUCED_MODEL_CONFIG_FILE} ${FINETUNE_INDUCED_MODEL_CONFIG_FILE} ${NEW_INDUCED_MODEL_NAME} ${CACHE_DIR}/layer_name_to_choosing_matrix/layer_name_to_matrix.pkl ${FINETUNE_WORK_DIR}/base.pth

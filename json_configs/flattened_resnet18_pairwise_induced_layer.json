@@ -1,0 +1,37 @@
+{
+    "relu0": [
+        "relu0",
+        "ResLayer0_BasicBlockV20_relu_1"
+    ],
+    "ResLayer0_BasicBlockV20_relu_2": [
+        "ResLayer0_BasicBlockV20_relu_2",
+        "ResLayer0_BasicBlockV21_relu_1"
+    ],
+    "ResLayer0_BasicBlockV21_relu_2": [
+        "ResLayer0_BasicBlockV21_relu_2",
+        "ResLayer1_BasicBlockV22_relu_1"
+    ],
+    "ResLayer1_BasicBlockV22_relu_2": [
+        "ResLayer1_BasicBlockV22_relu_2",
+        "ResLayer1_BasicBlockV23_relu_1"
+    ],
+    "ResLayer1_BasicBlockV23_relu_2":[
+        "ResLayer1_BasicBlockV23_relu_2",
+        "ResLayer2_BasicBlockV24_relu_1"
+    ],
+    "ResLayer2_BasicBlockV24_relu_2": [
+        "ResLayer2_BasicBlockV24_relu_2",
+    	"ResLayer2_BasicBlockV25_relu_1"
+    ],
+    "ResLayer2_BasicBlockV25_relu_2": [
+        "ResLayer2_BasicBlockV25_relu_2",
+    	"ResLayer3_BasicBlockV26_relu_1"
+    ],
+    "ResLayer3_BasicBlockV26_relu_2":[
+        "ResLayer3_BasicBlockV26_relu_2",
+    	"ResLayer3_BasicBlockV27_relu_1"
+    ],
+    "ResLayer3_BasicBlockV27_relu_2": [
+            "ResLayer3_BasicBlockV27_relu_2"
+    ]
+}
