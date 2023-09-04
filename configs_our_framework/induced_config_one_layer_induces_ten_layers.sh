@@ -10,7 +10,7 @@ export IS_RECLUSTER="TRUE"
 
 # A SPACE DELIMITED string with the number of prototypes per inducer. The number of prototype counts in this string must be of the same length as the number of inducers in the previous json
 # mapping file. The order of prototypes count in this string must match the order of the inducers in the mapping file.
-export PROTOTYPES_COUNTS="10"
+export PROTOTYPES_COUNTS="1000"
 
 # The name of the induced model (based on the inducer -> induced mapping defined earlier) that will be registerd in mmcls registry.
 export NEW_INDUCED_MODEL_NAME=ResNet18OneLayerWithSelfInduceToTenLayers
@@ -37,10 +37,10 @@ export BASELINE_FLATTENED_CHECKPOINT_PATH=/mnt/data/secure_inference_cache/train
 export CACHE_DIR=cached_relus/cifar100_with_val/flattened_resnet18/
 
 # The path to the config file of the flattened & induced model. This is an output path, so the directory to which this file is saved MUST exist.
-export BASE_INDUCED_MODEL_CONFIG_FILE=research/configs/classification/flattened_resnet/halfway_resplit_cifar100_dataset.py
+export BASE_INDUCED_MODEL_CONFIG_FILE=research/configs/classification/flattened_resnet/replacing_first_ten_layersresplit_cifar100_dataset.py
 
 # The path to the config file that is used to define the finetuning routine for the flattened & induced model. This is an output path, so the directory to which this file is saved MUST exist.
-export FINETUNE_INDUCED_MODEL_CONFIG_FILE=research/configs/classification/flattened_resnet/halfway_with_self_induce_resplit_cifar100_dataset.py
+export FINETUNE_INDUCED_MODEL_CONFIG_FILE=research/configs/classification/flattened_resnet/replacing_first_ten_layerswith_self_induce_resplit_cifar100_dataset.py
 
 # The path to the directory to which all finetuning artifacts will be written. This directory MUST exist.
-export FINETUNE_WORK_DIR=trained_networks/classification/resnet18_cifar100_resplit_flattened_backbone/halfway_with_self_induce/
+export FINETUNE_WORK_DIR=trained_networks/classification/resnet18_cifar100_resplit_flattened_backbone/replacing_first_ten_layerswith_self_induce/

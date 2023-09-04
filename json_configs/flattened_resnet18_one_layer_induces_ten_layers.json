@@ -8,8 +8,6 @@
         "ResLayer1_BasicBlockV22_relu_1",
         "ResLayer1_BasicBlockV22_relu_2",
         "ResLayer1_BasicBlockV23_relu_1",
-        "ResLayer1_BasicBlockV23_relu_2",
-        "ResLayer2_BasicBlockV24_relu_1",
-        "ResLayer2_BasicBlockV24_relu_2"
+        "ResLayer1_BasicBlockV23_relu_2"
     ]
 }
