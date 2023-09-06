@@ -11,3 +11,4 @@ relu_spec_files/
 *.py[cod]
 cached_relus/
 trained_networks/
+/temp_dir/

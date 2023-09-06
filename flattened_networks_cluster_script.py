@@ -28,7 +28,9 @@ def parse_args():
 
 
 class Associator:
-    def __init__(self, path_to_activations_cache: str, inducer_to_induced: dict, num_prototypes: list, outputs_dir: str, recluster: bool = True):
+    def __init__(self, path_to_activations_cache: str, inducer_to_induced: dict, num_prototypes: list,
+                 outputs_dir: str, recluster: bool = True,
+                 layer_name_to_matrix_pickle_filename: str = 'layer_name_to_matrix.pkl'):
         assert len(num_prototypes) == len(inducer_to_induced), "Explicitly specify the number of prototypes for each inducer layer."
         self.recluster = recluster
         self.inducer_to_induced = inducer_to_induced
@@ -37,6 +39,7 @@ class Associator:
         with open(path_to_activations_cache, 'rb') as f:
             self.cache = pickle.load(f)
         self.outputs_dir = outputs_dir
+        self.layer_name_to_matrix_pickle_filename = layer_name_to_matrix_pickle_filename
 
     @staticmethod
     def calculate_choosing_matrix(closest_prototypes: torch.Tensor,
@@ -120,7 +123,8 @@ class Associator:
                     pickle.dump(choosing_matrix, f)
 
 
-        with open(osp.join(self.outputs_dir, 'layer_name_to_choosing_matrix', 'layer_name_to_matrix.pkl'), 'wb') as f:
+        with open(osp.join(self.outputs_dir, 'layer_name_to_choosing_matrix',
+                           self.layer_name_to_matrix_pickle_filename), 'wb') as f:
             pickle.dump(choosing_matrices, f)
 
     def cluster_one_inducer(self, inducer_name: str, num_prototypes: int):

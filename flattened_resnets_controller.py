@@ -80,7 +80,8 @@ class ResNetController:
                  set_hooks_func=set_hooks_resnet18,
                  image_dims: tuple = (3, 32, 32),
                  path_to_flattened_resnet_declaration: str = FLATTENED_RESNET18_DECLARATION_PATH,
-                 inducer_to_induced: dict = INDUCER_TO_INDUCED):
+                 inducer_to_induced: dict = INDUCER_TO_INDUCED,
+                 set_as_relu=None, set_as_identity=None, relu_name_to_dim=None):
         self.new_name = new_name
         self.new_path = new_path
         self.model = old_model
@@ -88,7 +89,12 @@ class ResNetController:
         self.image_dims = image_dims
         self.path_to_flattened_resnet_declaration = path_to_flattened_resnet_declaration
         self.inducer_to_induced = inducer_to_induced
-        self.relu_name_to_dim = self.infer_relu_dimensions()
+        if relu_name_to_dim is None:
+            self.relu_name_to_dim = self.infer_relu_dimensions()
+        else:
+            self.relu_name_to_dim = relu_name_to_dim
+        self.set_as_relu = set_as_relu if set_as_relu else []
+        self.set_as_identity = set_as_identity if set_as_identity else []
 
 
     def infer_relu_dimensions(self):
@@ -140,6 +146,21 @@ class ResNetController:
                         resnet_with_induced_relu.splitlines()[:idx_to_replace ] +
                         [' ' * 8 + f'out = self.{induced_layer}(out, {k}_drelu)'] +
                         resnet_with_induced_relu.splitlines()[idx_to_replace + 1:])
+
+        # replace the activations with ReLUs:
+        for k in self.set_as_relu:
+            idx_to_replace = find_line_index_which_starts_with(resnet_with_induced_relu, f'self.{k}')
+            resnet_with_induced_relu = '\n'.join(
+                resnet_with_induced_relu.splitlines()[:idx_to_replace] +
+                [' ' * 8 + f'self.{k} = ReLU(inplace=False)'] +
+                resnet_with_induced_relu.splitlines()[idx_to_replace + 1:])
+        # replace the activations with Identities:
+        for k in self.set_as_identity:
+            idx_to_replace = find_line_index_which_starts_with(resnet_with_induced_relu, f'self.{k}')
+            resnet_with_induced_relu = '\n'.join(
+                resnet_with_induced_relu.splitlines()[:idx_to_replace] +
+                [' ' * 8 + f'self.{k} = Identity()'] +
+                resnet_with_induced_relu.splitlines()[idx_to_replace + 1:])
         return resnet_with_induced_relu
 
     def create_declaration(self):
