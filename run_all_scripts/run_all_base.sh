@@ -14,4 +14,5 @@
 
 ./create_induced_configs.sh
 
+./create_finetune_initial_checkpoint.sh
 ./finetune_v2.sh
