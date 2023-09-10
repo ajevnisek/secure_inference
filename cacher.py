@@ -9,9 +9,9 @@ DEFAULT_OUTPUT_PATH = os.path.join(DEFAULT_ACTIVATIONS_DIR, 'activations.pkl')
 
 
 def create_cache_config_file(model_name: str, output_path: str,
-                             is_induce_network: bool = False,
+                             is_induced_network: bool = False,
                              choosing_matrices_full_path: str = ''):
-    if not is_induce_network:
+    if not is_induced_network:
         slice1 = ''
         slice2 = ''
     else:
@@ -75,11 +75,13 @@ def cache_activations(model_name: str = 'FlattenedResNet18',
                       checkpoint_path: str = DEFAULT_CHECKPOINT_PATH,
                       activations_cache_dir: str = DEFAULT_ACTIVATIONS_DIR,
                       activations_output_path: str = DEFAULT_OUTPUT_PATH,
-                      is_induce_network: bool = False,
+                      is_induced_network: bool = False,
                       choosing_matrices_full_path: str = ''):
     config_path = os.path.join(configs_dir, f'{model_name}_activations_cache_config.py')
-    create_cache_config_file(model_name, config_path, is_induce_network, choosing_matrices_full_path)
+    create_cache_config_file(model_name, config_path, is_induced_network, choosing_matrices_full_path)
     # Run the other script
+    #import pdb
+    #pdb.set_trace()
     subprocess.run(["python3", "mmpretrain/tools/test_with_hooks_flattened_networks.py",
                     config_path, checkpoint_path, '--out', f'{activations_cache_dir}/out_file_flattened.json',
                     '--metrics', 'accuracy',
@@ -92,11 +94,11 @@ if __name__ == '__main__':
                       checkpoint_path='/mnt/data/secure_inference_cache/trained_networks/classification/resnet18_cifar100_resplit_flattened_backbone/baseline/latest.pth',
                       activations_cache_dir='temp_dir/replace_ten_and_then_the_rest/activations',
                       activations_output_path='temp_dir/replace_ten_and_then_the_rest/activations/activations_0.pkl',
-                      is_induce_network=False)
+                      is_induced_network=False)
     cache_activations('ResNet18OneLayerWithSelfInduceToTenLayers',
                       'research/configs/classification/flattened_resnet_split_to_two',
                       'trained_networks/classification/resnet18_cifar100_resplit_flattened_backbone/replacing_first_ten_layerswith_self_induce/latest.pth',
                       'temp_dir/replace_ten_and_then_the_rest/activations',
                       'temp_dir/replace_ten_and_then_the_rest/activations/activations_1.pkl',
-                      is_induce_network=True,
+                      is_induced_network=True,
                       choosing_matrices_full_path='cached_relus/cifar100_with_val/flattened_resnet18/layer_name_to_choosing_matrix/layer_name_to_matrix.pkl')

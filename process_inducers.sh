@@ -1,0 +1,1 @@
+python3 cache_cluster_associate_and_finetune.py FlattenedResNet18 ${NEW_INDUCED_MODEL_NAME} ${BASELINE_FLATTENED_CHECKPOINT_PATH} ${EXPERIMENT_NAME} ${EXPERIMENTS_DIR} ${CONFIG_DIR} ${YAML_CONFIG}

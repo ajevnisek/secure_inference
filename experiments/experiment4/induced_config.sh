@@ -1,13 +1,13 @@
 # A path to the yaml config file that contains the pipeline data.
-export YAML_CONFIG="yaml_configs/induce_first_layer.yaml"
+export YAML_CONFIG="experiments/experiment4/experiment4.yaml"
 
 # A user chosen name for the current experiment. Directories will be created based on this name to
 # differentiate experiments.
-export EXPERIMENT_NAME="ResNetFirstLayerInduce"
+export EXPERIMENT_NAME="Experiment4"
 
 # The root directory for all experiments. All intermediate results will be saved in this directory.
 # This directory MUST exist.
-export EXPERIMENTS_DIR="/tmp/experiments/"
+export EXPERIMENTS_DIR="/mnt/data/secure_inference_cache/experiments/"
 
 # The root directory for all config files. The base directory for all configs must reside here, so that any
 # config files will be able to import common configurations.
@@ -17,10 +17,10 @@ export CONFIG_DIR="research/configs/classification"
 export NETWORK_TYPE="ResNet18"
 
 # The name of the induced model (based on the yaml config file) that will be registerd in mmcls registry.
-export NEW_INDUCED_MODEL_NAME=ResNetFirstLayerInduce
+export NEW_INDUCED_MODEL_NAME=ResNetInducedExperiment4
 
 # The file name (NOT path) of the induced model definition that will be added to mmcls.
-export NEW_INDUCED_MODEL_CONFIG_FILE_NAME=resnet18_induced.py
+export NEW_INDUCED_MODEL_CONFIG_FILE_NAME=resnet18_induced_experiment4.py
 
 # The root directory of mmcls backbones.
 export MMCLS_BACKBONE_DIR=mmpretrain/mmcls/models/backbones/

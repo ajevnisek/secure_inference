@@ -1,1 +1,1 @@
-python3 iterate_inducers_build_networks.py ResNet18 temp_dir/backbones/flattened_resnet18.py yaml_configs/split_renset_to_two.yaml ResNetInduceInParts resnet18_split_to_two.py -b mmpretrain/mmcls/models/backbones
+python3 iterate_inducers_build_networks.py ${NETWORK_TYPE} ${MMCLS_BACKBONE_DIR}/flattened_resnet18.py ${YAML_CONFIG} ${NEW_INDUCED_MODEL_NAME} ${NEW_INDUCED_MODEL_CONFIG_FILE_NAME} -b ${MMCLS_BACKBONE_DIR}

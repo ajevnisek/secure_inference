@@ -12,3 +12,6 @@ relu_spec_files/
 cached_relus/
 trained_networks/
 /temp_dir/
+/research/configs/classification/Experiment4/
+/research/configs/classification/ResNetFirstLayerInduce/
+/out_file.json

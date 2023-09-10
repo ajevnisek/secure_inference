@@ -1,0 +1,60 @@
+inducer_to_induced:
+  ResLayer0_BasicBlockV20_relu_1:
+    - ResLayer0_BasicBlockV20_relu_1
+    - ResLayer0_BasicBlockV20_relu_2
+  ResLayer0_BasicBlockV21_relu_1:
+    - ResLayer0_BasicBlockV21_relu_1
+    - ResLayer0_BasicBlockV21_relu_2
+  ResLayer1_BasicBlockV22_relu_1:
+    - ResLayer1_BasicBlockV22_relu_1
+    - ResLayer1_BasicBlockV22_relu_2
+  ResLayer1_BasicBlockV23_relu_1:
+    - ResLayer1_BasicBlockV23_relu_1
+    - ResLayer1_BasicBlockV23_relu_2
+  ResLayer2_BasicBlockV24_relu_1:
+    - ResLayer2_BasicBlockV24_relu_1
+    - ResLayer2_BasicBlockV24_relu_2
+  ResLayer2_BasicBlockV25_relu_1:
+    - ResLayer2_BasicBlockV25_relu_1
+    - ResLayer2_BasicBlockV25_relu_2
+  ResLayer3_BasicBlockV26_relu_1:
+    - ResLayer3_BasicBlockV26_relu_1
+    - ResLayer3_BasicBlockV26_relu_2
+  ResLayer3_BasicBlockV27_relu_1:
+    - ResLayer3_BasicBlockV27_relu_1
+    - ResLayer3_BasicBlockV27_relu_2
+
+set_as_identity:
+    - relu0
+
+set_as_relu:
+
+order:
+  - ResLayer0_BasicBlockV20_relu_1
+  - ResLayer0_BasicBlockV21_relu_1
+  - ResLayer1_BasicBlockV22_relu_1
+  - ResLayer1_BasicBlockV23_relu_1
+  - ResLayer2_BasicBlockV24_relu_1
+  - ResLayer2_BasicBlockV25_relu_1
+  - ResLayer3_BasicBlockV26_relu_1
+  - ResLayer3_BasicBlockV27_relu_1
+
+num_prototypes:
+  - 4000
+  - 4000
+  - 2000
+  - 2000
+  - 1000
+  - 1000
+  - 500
+  - 500
+
+epochs:
+  - 20
+  - 20
+  - 20
+  - 20
+  - 20
+  - 20
+  - 20
+  - 170
